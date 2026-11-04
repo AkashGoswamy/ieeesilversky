@@ -1,0 +1,10 @@
+const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const source=fs.readFileSync(path.join(__dirname,'../public/app.js'),'utf8').replace(/\ninit\(\);\s*$/,'\nglobalThis.__pipeline={parseCSV,rawConvert,processRows,state};');
+const sandbox={document:{getElementById:()=>({})},window:{},console,URL,Blob,performance,Intl,Date,Math,Map,Set,Array,Object,Number,String,JSON,RegExp,Error,Promise,setTimeout,clearTimeout};
+sandbox.globalThis=sandbox;vm.runInNewContext(source,sandbox);
+const {parseCSV,rawConvert,processRows,state}=sandbox.__pipeline;
+const csv=fs.readFileSync(path.join(__dirname,'../data/Payne_et_al._2020_Influence_of_environmental_variables_on_water_visitation.csv'),'utf8');
+const raw=parseCSV(csv).map(rawConvert);sandbox.window._raw=raw;state.collars=[...new Set(raw.map(x=>x.collar))].sort();state.rows=processRows(raw);
+const collar=state.collars.includes('19842')?'19842':state.collars[0],rows=state.rows.filter(x=>x.collar===collar&&x.observed),cutoff=rows.at(-1).dateText,end=Date.parse(cutoff+'T00:00:00Z');
+const payload={collar,cutoff,rows:state.rows.filter(r=>r.collar===collar&&r.day<=end),sourceQuality:raw.filter(r=>r.collar===collar&&r.day<=end).map(r=>({collar:r.collar,day:r.day,qc_bad_coord:r.qc_bad_coord,qc_missing_env:r.qc_missing_env,qc_long_visit:r.qc_long_visit})),population:state.rows.filter(r=>r.day===end).map(r=>({day:r.day,observed:r.observed,z_speed:r.z_speed,z_visit:r.z_visit}))};
+fetch('http://127.0.0.1:4173/api/agent/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(async r=>{const d=await r.json();console.log(JSON.stringify({http_status:r.status,collar,cutoff,status:d.status,model:d.model,decision:d.decision?{action:d.decision.action,priority:d.decision.priority,confidence:d.decision.confidence,uncertainty:d.decision.uncertainty,review_required:d.decision.review_required,evidence_count:d.decision.evidence?.length,summary:d.decision.summary,reasoning:d.decision.reasoning}:undefined,tools:d.trace?.map(x=>x.tool),error:d.error},null,2))}).catch(e=>console.log(JSON.stringify({request_error:e.message})));

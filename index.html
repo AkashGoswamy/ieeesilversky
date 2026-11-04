@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f6f2"><meta name="description" content="KhulanSense — research monitoring for steppe wildlife">
+  <title>KhulanSense — Wildlife signal observatory</title><link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#overview" aria-label="KhulanSense overview"><span class="brand-mark">K<span>·</span></span><span class="brand-name">khulan<span>sense</span><small>FIELD INTELLIGENCE LAB</small></span></a>
+    <div class="workspace"><span class="live-dot"></span> RESEARCH WORKSPACE <span class="chevron">⌄</span></div>
+    <div class="nav-caption">OBSERVATORY</div>
+    <nav id="nav">
+      <a href="#overview" data-page="overview" class="nav-item active"><span class="nav-icon">◫</span>Overview</a>
+      <a href="#animal" data-page="animal" class="nav-item"><span class="nav-icon">◉</span>Animal explorer</a>
+      <a href="#movement" data-page="movement" class="nav-item"><span class="nav-icon">⌁</span>Movement & signals</a>
+      <a href="#visitation" data-page="visitation" class="nav-item"><span class="nav-icon">◷</span>Visitation</a>
+      <a href="#environment" data-page="environment" class="nav-item"><span class="nav-icon">⌁</span>Environment</a>
+      <a href="#population" data-page="population" class="nav-item"><span class="nav-icon">▥</span>Population</a>
+      <a href="#anomalies" data-page="anomalies" class="nav-item"><span class="nav-icon">⌖</span>Anomaly explorer<span class="nav-badge" id="episodeBadge">—</span></a>
+      <a href="#quality" data-page="quality" class="nav-item"><span class="nav-icon">◉</span>Data quality</a>
+      <div class="nav-caption nav-gap">DECISION SYSTEM</div>
+      <a href="#agent" data-page="agent" class="nav-item"><span class="nav-icon">✳</span>Agentic monitoring</a>
+      <a href="#decisionlog" data-page="decisionlog" class="nav-item"><span class="nav-icon">≡</span>Decision log</a>
+      <a href="#experiments" data-page="experiments" class="nav-item"><span class="nav-icon">⤧</span>Experiments</a>
+      <a href="#methods" data-page="methods" class="nav-item"><span class="nav-icon">≡</span>Methods & scope</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="data-source"><span class="source-icon">↗</span><div><b>PAYNE ET AL. · 2020</b><small>Dryad · Gobi desert study</small></div></div><button class="settings-link" id="openSettings"><span>⚙</span> Settings & API key</button><div class="version">KHULANSENSE <span>v1.0.0</span></div></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div class="crumb"><span>FIELD INTELLIGENCE</span><b>/</b><strong id="crumbPage">Overview</strong></div><div class="top-right"><span class="historical-tag"><i></i> HISTORICAL DATA</span><button class="icon-button" title="Export current data" id="quickExport">⇩</button><span class="avatar">KS</span></div></header>
+    <section id="app" class="content"><div class="loading"><span class="spinner"></span><div><b>Preparing the observatory</b><small>Loading source tables and building causal features…</small></div></div></section>
+  </main>
+  <dialog id="settingsDialog" class="modal"><form method="dialog"><button class="modal-close" aria-label="Close">×</button></form><span class="eyebrow">CONNECTIONS</span><h2>Agent settings</h2><p class="muted">Signal processing and local policy run without a key. The optional Groq key is sent to this localhost backend and held in server memory only; it is never returned or written to disk.</p><label for="apiKey">Groq API key</label><div class="key-input"><input id="apiKey" type="password" autocomplete="off" placeholder="gsk_…"><button id="toggleKey" type="button">Show</button></div><div class="setting-note"><span class="secure-dot"></span><span>Key input is cleared after sending to the local backend. It is not saved in browser storage.</span></div><label for="modelName" class="model-label">Backend-selected model</label><input id="modelName" class="text-input" value="openai/gpt-oss-120b" readonly><div class="modal-actions"><button class="button ghost" id="clearKey" type="button">Clear backend key</button><button class="button secondary" id="testGroqConnection" type="button">Test connection</button><button class="button primary" id="saveSettings" type="button">Connect</button></div><div id="settingsStatus" class="status-line"></div></dialog>
+  <script src="/public/app.js" defer></script>
+</body></html>

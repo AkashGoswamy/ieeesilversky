@@ -1,0 +1,8 @@
+{
+  "name": "khulansense",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Causal wildlife signal monitoring and retrospective evaluation research prototype",
+  "scripts": {"start": "node server.js", "check": "node --check public/app.js && node --check server.js && node --check test/groq-agent.test.js && node --check test/live-agent-smoke.js", "test": "node --test test/groq-agent.test.js"},
+  "engines": {"node": ">=18"}
+}
